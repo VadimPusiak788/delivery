@@ -14,13 +14,9 @@ class App extends Component {
 
   render() {
     return (
-      <ul>
-          return (
-            <li>
-              fdsdf
-            </li>
-          );
-      </ul>
+      <h1>
+        Hello, you did it
+      </h1>
     );
   }
 }
