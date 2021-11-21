@@ -1,3 +1,14 @@
-env/
+# Python
+# virtual environment
+env
+# cache files
+__pycache__
+
+# Javascript
+# libraries
+node_modules
+# resulting bundle
+frontend/static/frontend/main.js
+
+# Database
 db.sqlite3
-__pycache__/
