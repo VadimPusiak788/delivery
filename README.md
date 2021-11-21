@@ -14,9 +14,10 @@ https://docs.python.org/3/library/venv.html
 $ python manage.py migrate
 ```
 
-3) Запустіть збірку js
+3) Запустіть збірку js, встановивши потрібні бібліотеки
 ```bash
 $ cd frontend
+$ npm ci
 $ npm run dev
 ```
 
