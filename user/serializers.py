@@ -1,11 +1,10 @@
-from importlib.metadata import requires
-import django
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.password_validation import validate_password
 
-from user.models import Customer, Courier
+from user.models import Customer, Courier, Location
+
 
 class CustomerCustomRegistrationSerializer(RegisterSerializer):
 
@@ -14,6 +13,7 @@ class CustomerCustomRegistrationSerializer(RegisterSerializer):
     email = serializers.EmailField(required=True)
     password1 = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+
     def get_cleaned_data(self):
         data = super(CustomerCustomRegistrationSerializer, self).get_cleaned_data()
         extra_data = {
@@ -60,3 +60,9 @@ class CourierCustomRegistrationSerializer(RegisterSerializer):
         buyer.save()
 
         return user
+
+
+class SerializersLocation(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = '__all__'

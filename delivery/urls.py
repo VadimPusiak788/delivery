@@ -48,6 +48,8 @@ urlpatterns = [
     
     path('api/', include('user.urls', namespace='api')),
     path('', include('frontend.urls')),
+    path('api/order/', include('order.urls'))
+    
 ] 
 
 if settings.DEBUG:
