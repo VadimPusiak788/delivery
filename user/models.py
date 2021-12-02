@@ -24,7 +24,7 @@ class User(AbstractUser):
 class Customer(models.Model):
 
     customer = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    location = models.ForeignKey(Location, on_delete=models.DO_NOTHING)
+    location = models.ForeignKey(Location, on_delete=models.DO_NOTHING, null=True, blank=True)
     rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)], default=0)
 
     def __str__(self) -> str:
@@ -51,7 +51,7 @@ class Courier(models.Model):
         choices=EXECUTION_STATUS,
         default=FREE
     )
-    location = models.ForeignKey(Location, on_delete=models.DO_NOTHING)
+    location = models.ForeignKey(Location, on_delete=models.DO_NOTHING, null=True, blank=True)
     rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)], default=0)
 
     def __str__(self) -> str:

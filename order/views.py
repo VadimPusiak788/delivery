@@ -7,7 +7,7 @@ from order.models import Product, Supplier
 from order.serializers import SerializersProduct, SerializersSupplier
 from order.services import MainServices
 
-class ListProductView(generics.ListAPIView):
+class DetailProductView(generics.RetrieveAPIView):
 
     queryset = Product.objects.all()
     serializer_class = SerializersProduct
@@ -19,13 +19,4 @@ class ListSupllierView(generics.ListAPIView):
     serializer_class = SerializersSupplier
 
 
-class AddProductToOrder(APIView):
-
-    authentication_classes = [authentication.TokenAuthentication]
-
-    permissions = [permissions.IsAuthenticated]
-
-    def post(self, request):
-        
-        order = MainServices(request).execute()
 

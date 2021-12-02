@@ -5,13 +5,13 @@ from user.serializers import SerializersLocation
 
 
 class SerializersSupplier(serializers.ModelSerializer):
-    products = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field='name'
-    )
 
     location = SerializersLocation(read_only=True)
+    products = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='detail_product'
+    )
 
     class Meta:
 
