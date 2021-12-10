@@ -65,4 +65,17 @@ class CourierCustomRegistrationSerializer(RegisterSerializer):
         return user
 
 
+class SerailizersCustomer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Customer
+        fields = '__all__'
+
+
+class SerailizersCourier(serializers.ModelSerializer):
+
+    class Meta:
+        model = Courier
+        fields = '__all__'
+
 

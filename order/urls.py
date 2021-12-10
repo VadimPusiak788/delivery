@@ -1,9 +1,13 @@
 from django.urls import path
 
-from order.views import  ListSupllierView, DetailProductView
+from order.views import  (ListSupllierView, DetailProductView,
+                             DetailSupplierView, CartView, OrderDetailView)
 
 
 urlpatterns = [
     path('product/detail/<int:pk>/', DetailProductView.as_view(), name='detail_product'),
-    path('list/supplier/', ListSupllierView.as_view())
+    path('supplier/detail/<int:pk>/', DetailSupplierView.as_view(), name='supplier-detail'),
+    path('list/supplier/', ListSupllierView.as_view()),
+    path('customer/view_cart/', CartView.as_view()),
+    path('courier/change_order/<int:pk>/', OrderDetailView.as_view(), name='orderstatus-detail'),
 ]

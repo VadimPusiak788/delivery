@@ -1,9 +1,8 @@
-from django.http import response
 from rest_auth.registration.views import RegisterView
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-
+from order.models import Order, OrderStatus
+from order.serializers import SerializersOrderStatus
 
 from user.serializers import (CourierCustomRegistrationSerializer,
                 CustomerCustomRegistrationSerializer)
@@ -17,9 +16,22 @@ class CustomerRegistrationView(RegisterView):
     serializer_class = CustomerCustomRegistrationSerializer
 
 
-class GetUserView(APIView):
+class UserProfileView(APIView):
 
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response('All OK')
+        
+        if request.user.is_customer:
+            order = Order.objects.filter(customer=request.user.id)
+            orders = OrderStatus.objects.filter(order__in=order)
+        
+        else:
+            orders = OrderStatus.objects.all()
+
+        serializer_context = {
+            'request': request,
+        }
+
+        serializers_order = SerializersOrderStatus(orders, many=True, context=serializer_context)
+
+        return Response(serializers_order.data)
