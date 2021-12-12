@@ -5,34 +5,23 @@ from django.contrib.auth.password_validation import validate_password
 
 from user.models import Customer, Courier, Location
 
+
 class SerializersLocation(serializers.ModelSerializer):
     class Meta:
         model = Location
         fields = '__all__'
 
+
 class CustomerCustomRegistrationSerializer(RegisterSerializer):
 
     customer = serializers.PrimaryKeyRelatedField(read_only=True,)
-    email = serializers.EmailField(required=True)
-    # location = SerializersLocation()
+    location = SerializersLocation()
     password1 = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
 
-    def get_cleaned_data(self):
-        data = super(CustomerCustomRegistrationSerializer, self).get_cleaned_data()
-        extra_data = {
-            # 'location' : self.validated_data.get('location', ''),
-            'email' : self.validated_data.get('email'),
-
-            }
-        data.update(extra_data)
-        return data
-
     def save(self, request):
         user = super(CustomerCustomRegistrationSerializer, self).save(request)
-
         user.is_customer = True
-        user.email = self.cleaned_data.get('email')
         user.save()
         seller = Customer(customer=user)
         seller.save()
@@ -41,19 +30,10 @@ class CustomerCustomRegistrationSerializer(RegisterSerializer):
 
 class CourierCustomRegistrationSerializer(RegisterSerializer):
 
-    is_courier = serializers.PrimaryKeyRelatedField(read_only=True,) #by default allow_null = False
-    # location = SerializersLocation()
+    is_courier = serializers.PrimaryKeyRelatedField(read_only=True)
+    location = SerializersLocation()
     password1 = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
-
-    # def get_cleaned_data(self):
-    #     data = super(CourierCustomRegistrationSerializer, self).get_cleaned_data()
-    #     extra_data = {
-    #         'location'   : self.validated_data.get('location')
-    #     }
-    #     data.update(extra_data)
-
-    #     return data
 
     def save(self, request):
         user = super(CourierCustomRegistrationSerializer, self).save(request)

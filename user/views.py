@@ -7,6 +7,7 @@ from order.serializers import SerializersOrderStatus
 from user.serializers import (CourierCustomRegistrationSerializer,
                 CustomerCustomRegistrationSerializer)
 
+from order.query import filter_user_by_courier
 
 class CourierRegistrationView(RegisterView):
     serializer_class = CourierCustomRegistrationSerializer
@@ -26,7 +27,8 @@ class UserProfileView(APIView):
             orders = OrderStatus.objects.filter(order__in=order)
         
         else:
-            orders = OrderStatus.objects.all()
+            courier = filter_user_by_courier(request.user)
+            orders = OrderStatus.objects.filter(courier=courier)
 
         serializer_context = {
             'request': request,
@@ -35,3 +37,13 @@ class UserProfileView(APIView):
         serializers_order = SerializersOrderStatus(orders, many=True, context=serializer_context)
 
         return Response(serializers_order.data)
+
+
+class CouirerOffer(APIView):
+
+    def get(self, request):
+
+        order = Order.objects.filter(status=CREATED)
+
+
+

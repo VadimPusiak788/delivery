@@ -3,60 +3,38 @@ from django.shortcuts import get_object_or_404
 from decimal import Decimal
 from django.conf import settings
 from order.models import OrderItem, Product
+from order.query import filter_order_item_user__ordered
 
 
 class Cart:
-    
-    def __init__(self, request) -> None:
-        
-        self.session = request.session
-        self.user_id = str(request.user.pk)
 
-        cart = self.session.get(settings.CART_SESSION_ID + self.user_id)
-
-        if not cart:
-            cart = self.session[settings.CART_SESSION_ID + self.user_id] = {}
-        self.cart = cart
-    
-    def add(self, product_id, quantity=1, override_quantity=False):
+    @staticmethod
+    def add(product_id, user):
 
         product = get_object_or_404(Product, pk=product_id)
-        order_item = OrderItem.objects.create(product=product)
-        order_item_id = order_item.pk 
+        order_item, created = OrderItem.objects.get_or_create(product=product, customer=user, ordered=False)
 
-        if order_item_id not in self.cart:
-            self.cart[order_item_id] = {'quantity': order_item.quantity,
-            'price': str(order_item.product.price),
-            'product': order_item.product.name}
+        if not created:
+            order_item.quantity += 1
+            order_item.save()
 
-        self.save()
+    @staticmethod
+    def remove(order_item_id, user):
+        get_object_or_404(OrderItem, pk=order_item_id, customer=user).delete()
     
-    def save(self):
-        self.session.modified = True
+    @staticmethod
+    def clear(user):
+        filter_order_item_user__ordered(user).delete()
 
-    def remove(self, order_item_id):
+    @staticmethod     
+    def get_all_orders(user):
+        orders = filter_order_item_user__ordered(user)
+        if len(orders) >= 1:
+            return orders
+        return None
 
-        if order_item_id in self.cart:
-            
-            del self.cart[order_item_id]
-            self.save()
-        
-    def clear(self):
-        for orders_id in self.cart:
-            OrderItem.objects.filter(id=orders_id)
-        del self.session[settings.CART_SESSION_ID + self.user_id]
 
-        self.save()
-    
-    def get_total_price(self):
-        return str(sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values()))
-    
-    def get_all_product(self):
-        return self.cart
-
-    def get_all_orders(self):
-        orders = []
-        for orders_id in self.cart:
-            orders.append(OrderItem.objects.get(id=orders_id))
-
-        return orders        
+    def get_total_price(user):
+        orders = Cart.get_all_orders(user)
+        return str(sum(Decimal(order.product.price) * order.quantity for order in orders))
+      

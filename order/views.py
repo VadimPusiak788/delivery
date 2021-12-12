@@ -1,17 +1,17 @@
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from user.models import Customer, Courier
-from django.http import Http404
 from user.permissions import PermissionOrderCustomer, PermissionOrderCourier
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 
 
-from order.models import Order, OrderItem, OrderStatus, Product, Supplier
-from order.serializers import (SerializersProduct, SerializersListSupplier, SerializersSupplier,
+from order.models import  OrderStatus, Product, Supplier
+from order.serializers import (SerializersProduct, SerializersListSupplier, SerializersSupplier, SerializersOrderItem,
                                 SerializersOrder, SerializersOrderStatusDetail)
 
 from order.cart import Cart
+from order.query import filter_user_by_customer, filter_user_by_courier, create_order
 
 
 class DetailSupplierView(generics.RetrieveAPIView):
@@ -27,22 +27,18 @@ class ListSupllierView(generics.ListAPIView):
 
 class DetailProductView(APIView):
 
-    def get_object(self, pk):
-        try:
-            return Product.objects.get(pk=pk)
-        except Product.DoesNotExist:
-            raise Http404
+    permission_classes = [PermissionOrderCustomer]
+
 
     def get(self, request, pk):
-        product = self.get_object(pk)
+        product = get_object_or_404(Product, pk=pk)
         serializers_product = SerializersProduct(product)
         return Response(serializers_product.data)
 
     def post(self, request, pk):
 
-        cart = Cart(request)
-
-        cart.add(pk)
+        customer = filter_user_by_customer(request.user)
+        Cart.add(pk, customer)
 
         return Response("It's OK")
 
@@ -52,59 +48,57 @@ class CartView(APIView):
     permission_classes = [PermissionOrderCustomer]
 
     def get(self, request):
-        cart = Cart(request)
-        cart_product = cart.get_all_product()
-        price_total = cart.get_total_price()
+        customer = filter_user_by_customer(request.user)
+        orders = Cart.get_all_orders(customer)
+        if orders is not None:
+            
+            return Response({'products': SerializersOrderItem(Cart.get_all_orders(customer), many=True).data,
+                                                             'price_total': Cart.get_total_price(customer)})
 
-        return Response({'products':cart_product , 'price_total': price_total})
+        return Response("You have no orders yet")
     
 
     def post(self, request):
-        cart = Cart(request)
-        all_orders = cart.get_all_orders()
-        price_total = cart.get_total_price()
+        customer = filter_user_by_customer(request.user)
 
-        customer = Customer.objects.get(customer=request.user)
-        order = Order.objects.create(customer=customer, total=price_total)
+        all_orders = Cart.get_all_orders(customer)
+
+        if all_orders is  None:
+            return Response("You have no orders yet")
+
+        price_total = Cart.get_total_price(customer)
+        order = create_order(customer, price_total)
+
+        for orderit in all_orders:
+            orderit.ordered = True
+            orderit.save()
+
         order.orderitem.add(*all_orders)
         order.save()
-        cart.clear()
 
         serializers_order = SerializersOrder(order)
 
         return Response(serializers_order.data)
     
-    def patch(self, request):
-        pass
-
     def delete(self, request):
-        cart = Cart(request)
 
-        cart.clear()
+        Cart.clear()
 
         return Response('Cart is empty')
     
-
 
 class OrderDetailView(APIView):
 
     permission_classes = [PermissionOrderCourier]
 
-    def get_object(self, pk):
-        try:
-            return OrderStatus.objects.get(pk=pk)
-        except OrderStatus.DoesNotExist:
-            raise Http404
-
     def patch(self, request, pk):
-        order_stat = self.get_object(pk)
+        order_stat = get_object_or_404(OrderStatus, pk=pk)
 
-        # courier = Courier.objects.get(courier=request.user)
+        courier = filter_user_by_courier(request.user)
 
-        # order_stat.courier = courier
+        order_stat.courier = courier
 
         updated_order_serializer = SerializersOrderStatusDetail(order_stat, data=request.data, partial=True)
-
         if updated_order_serializer.is_valid():
 
             updated_order_serializer.save()
@@ -113,5 +107,5 @@ class OrderDetailView(APIView):
         return Response(
             updated_order_serializer.errors, status=status.HTTP_400_BAD_REQUEST
         )
-    
+
         

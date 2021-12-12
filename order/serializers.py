@@ -4,20 +4,6 @@ from order.models import Order, OrderItem, OrderStatus, Product, Supplier
 from user.serializers import SerializersLocation, SerailizersCustomer, SerailizersCourier
 
 
-class SerializersSupplier(serializers.ModelSerializer):
-
-    location = SerializersLocation(read_only=True)
-    products = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='detail_product'
-    )
-
-    class Meta:
-
-        model = Supplier
-        fields = ('name', 'location', 'products')
-
 
 class SerializersListSupplier(serializers.HyperlinkedModelSerializer):
     location = SerializersLocation(read_only=True)
@@ -34,6 +20,16 @@ class SerializersProduct(serializers.ModelSerializer):
         model = Product
         fields = ('name', 'description', 'price')
 
+
+class SerializersSupplier(serializers.ModelSerializer):
+
+    location = SerializersLocation(read_only=True)
+    products = SerializersProduct()
+
+    class Meta:
+
+        model = Supplier
+        fields = ('id', 'name', 'location', 'products')
 
 class SerializersOrderItem(serializers.ModelSerializer):
     
@@ -57,15 +53,16 @@ class SerializersOrder(serializers.ModelSerializer):
         fields = ('customer', 'orderitem')
 
 
-class SerializersOrderStatus(serializers.HyperlinkedModelSerializer):
+class SerializersOrderStatus(serializers.ModelSerializer):
 
     date_create = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
     courier = SerailizersCourier()
+    order = SerializersOrder()
 
 
     class Meta:
         model = OrderStatus
-        fields = ('url', 'status', 'courier', 'date_create')
+        fields = ('id', 'order', 'status', 'courier', 'date_create')
 
 
 class SerializersOrderStatusDetail(serializers.ModelSerializer):

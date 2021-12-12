@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from user.models import Customer, Courier, Location
 
@@ -28,6 +29,14 @@ class OrderItem(models.Model):
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING)
+    ordered = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.date_create = timezone.now()
+        self.date_create = timezone.now()
+        return super(OrderItem, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
 
@@ -49,13 +58,11 @@ class OrderStatus(models.Model):
 
     CREATED = 'CREATED'
     ACCEPT = 'ACCEPT'
-    INPROGREES = 'INPROGREES'
     FINISHED = 'FINISHED'
 
     STATUS_ORDER = [
         (CREATED, "Creat order"),
         (ACCEPT, "Accept order"),
-        (INPROGREES, "In progress order"),
         (FINISHED, 'Finished order')
     ]
 
