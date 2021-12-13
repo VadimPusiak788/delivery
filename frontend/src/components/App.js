@@ -51,7 +51,7 @@ class WelcomePage extends Component {
     }
 
     choose_role() {
-        let choices = [
+        const choices = [
             ["Customer", "As a Customer"],
             ["Courier", "As a Courier"],
         ];
@@ -74,7 +74,7 @@ class WelcomePage extends Component {
     }
 
     choose_auth() {
-        let choices = [
+        const choices = [
             ["Register", "No. Sign me up!"],
             ["Login", "Yes. Log-In"],
         ];
@@ -88,7 +88,7 @@ class WelcomePage extends Component {
     }
 
     onLogin(auth_key) {
-        let data = {
+        const data = {
             role: this.state.role,
             auth_key: auth_key, 
         };
@@ -130,22 +130,42 @@ class WelcomePage extends Component {
 class App extends Component {
     constructor(props) {
         super(props);
+        const role = window.localStorage.getItem("role");
+        const auth_key = window.localStorage.getItem("auth_key");
         this.state = {
-            role: 'Customer',
-            step: 'Auth',
+            role: role,
+            auth_key: auth_key,
+            next_step: 'Auth',
         };
 
         this.onLogin = this.onLogin.bind(this);
     }
 
     onLogin(data) {
-        let {role, auth_key} = data;
+        const {role, auth_key} = data;
         console.log(data);
-        this.setState({step: 'Main'})
+        window.localStorage.setItem("auth_key", auth_key);
+        window.localStorage.setItem("role", role);
+        this.setState({role: role, auth_key: auth_key, next_step: 'Main'})
+    }
+
+    findStep() {
+        const needLogin = (state) => {
+            const need_key = state.auth_key === undefined;
+            const need_role = state.role === undefined;
+            return state.next_step === 'Auth' && (need_role || need_key)
+        };
+
+        if (needLogin(this.state)) {
+            return 'Auth'
+        } else {
+            return this.next_step;
+        }
     }
 
     render() {
-        if (this.state.step === 'Auth') {
+        const step = this.findStep();
+        if (step === 'Auth') {
             return <WelcomePage onLogin={this.onLogin}/>
         } else {
             return <h1> Not implemented </h1>
