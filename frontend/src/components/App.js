@@ -126,19 +126,37 @@ class WelcomePage extends Component {
     }
 }
 
+const Frame = (props) => {
+    return (
+        <div>
+            {props.children}
+            <button onClick={props.resetAction}>
+                Reset Data (used for testing)
+            </button>
+        </div>
+    )
+}
+
 
 class App extends Component {
     constructor(props) {
         super(props);
-        const role = window.localStorage.getItem("role");
-        const auth_key = window.localStorage.getItem("auth_key");
+        const role = window.localStorage.getItem("role") ?? null;
+        const auth_key = window.localStorage.getItem("auth_key") ?? null;
         this.state = {
             role: role,
             auth_key: auth_key,
-            next_step: 'Auth',
+            next_step: 'Main',
         };
 
         this.onLogin = this.onLogin.bind(this);
+        this.resetData = this.resetData.bind(this);
+    }
+
+    resetData() {
+        this.setState({role: null, auth_key: null, next_step: 'Auth'})
+        window.localStorage.removeItem("role")
+        window.localStorage.removeItem("auth_key")
     }
 
     onLogin(data) {
@@ -151,24 +169,32 @@ class App extends Component {
 
     findStep() {
         const needLogin = (state) => {
-            const need_key = state.auth_key === undefined;
-            const need_role = state.role === undefined;
-            return state.next_step === 'Auth' && (need_role || need_key)
+            const need_key = state.auth_key === null;
+            const need_role = state.role === null;
+            return state.next_step === 'Main' && (need_role || need_key)
         };
 
         if (needLogin(this.state)) {
             return 'Auth'
         } else {
-            return this.next_step;
+            return this.state.next_step;
         }
     }
 
     render() {
         const step = this.findStep();
         if (step === 'Auth') {
-            return <WelcomePage onLogin={this.onLogin}/>
+            return (
+                <Frame resetAction={this.resetData}>
+                    <WelcomePage onLogin={this.onLogin}/>
+                </Frame>
+            )
         } else {
-            return <h1> Not implemented </h1>
+            return (
+                <Frame resetAction={this.resetData}>
+                    <h1> Not implemented </h1>
+                </Frame>
+            )
         }
     }
 }
