@@ -5,15 +5,29 @@ from order.models import Order, OrderStatus
 from order.serializers import SerializersOrderStatus
 
 from user.serializers import (CourierCustomRegistrationSerializer,
-                CustomerCustomRegistrationSerializer)
+                CustomerCustomRegistrationSerializer,SerailizersCustomerMe,SerailizersCourierMe)
 
 from order.query import filter_user_by_courier
+from rest_framework.permissions import IsAuthenticated, AllowAny
+
 
 class CourierRegistrationView(RegisterView):
+    permission_classes = (AllowAny,)
+    authentication_classes = ()
     serializer_class = CourierCustomRegistrationSerializer
 
+class UserMeView(APIView):
+    def get(self, request):
+        serializer_context = {
+            'request': request,
+        }
+        if request.user.is_customer:
+            return Response(SerailizersCustomerMe(request.user,  context=serializer_context).data)
+        return Response(SerailizersCourierMe(request.user,  context=serializer_context).data)
 
 class CustomerRegistrationView(RegisterView):
+    permission_classes = (AllowAny,)
+    authentication_classes = ()
     serializer_class = CustomerCustomRegistrationSerializer
 
 
@@ -28,8 +42,8 @@ class UserProfileView(APIView):
         
         else:
             courier = filter_user_by_courier(request.user)
-            orders = OrderStatus.objects.filter(courier=courier)
-
+            orders = OrderStatus.objects.filter(courier=courier, status='FINISHED')
+            
         serializer_context = {
             'request': request,
         }
@@ -41,9 +55,13 @@ class UserProfileView(APIView):
 
 class CouirerOffer(APIView):
 
+
     def get(self, request):
 
-        order = Order.objects.filter(status=CREATED)
+        order = OrderStatus.objects.filter(status__in=['CREATED', 'ACCEPT'])
 
+        serializers_order = SerializersOrderStatus(order, many=True)
+
+        return Response(serializers_order.data)
 
 

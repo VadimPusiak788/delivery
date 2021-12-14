@@ -10,7 +10,7 @@ class SerializersListSupplier(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Supplier
-        fields = ('url', 'name', 'location')
+        fields = ('id', 'url', 'name', 'location')
 
 
 class SerializersProduct(serializers.ModelSerializer):
@@ -18,13 +18,13 @@ class SerializersProduct(serializers.ModelSerializer):
     class Meta:
 
         model = Product
-        fields = ('name', 'description', 'price')
+        fields = ('id', 'name', 'description', 'price')
 
 
 class SerializersSupplier(serializers.ModelSerializer):
 
     location = SerializersLocation(read_only=True)
-    products = SerializersProduct()
+    products = SerializersProduct(many=True)
 
     class Meta:
 
@@ -40,7 +40,7 @@ class SerializersOrderItem(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ('quantity', 'product')
+        fields = ('id', 'quantity', 'product')
 
 
 class SerializersOrder(serializers.ModelSerializer):
@@ -50,7 +50,7 @@ class SerializersOrder(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ('customer', 'orderitem')
+        fields = ('customer', 'orderitem', 'total')
 
 
 class SerializersOrderStatus(serializers.ModelSerializer):

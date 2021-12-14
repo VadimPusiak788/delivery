@@ -32,12 +32,6 @@ class OrderItem(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING)
     ordered = models.BooleanField(default=False)
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.date_create = timezone.now()
-        self.date_create = timezone.now()
-        return super(OrderItem, self).save(*args, **kwargs)
-
     def __str__(self) -> str:
 
         return f'Product {self.product.name} -> {self.quantity}'
@@ -79,6 +73,8 @@ class OrderStatus(models.Model):
 
     class Meta:
         verbose_name_plural = 'Order Status'
+        ordering = ["-date_create"]
+
 
 
     def __str__(self) -> str:

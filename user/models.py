@@ -34,4 +34,4 @@ class Courier(models.Model):
     location = models.ForeignKey(Location, on_delete=models.DO_NOTHING, null=True, blank=True)
 
     def __str__(self) -> str:
-        return f'Courier {self.courier.first_name}'
+        return f'Courier {self.courier.username}'

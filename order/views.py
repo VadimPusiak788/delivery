@@ -6,7 +6,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 
-from order.models import  OrderStatus, Product, Supplier
+from order.models import  Order, OrderStatus, Product, Supplier, OrderItem
 from order.serializers import (SerializersProduct, SerializersListSupplier, SerializersSupplier, SerializersOrderItem,
                                 SerializersOrder, SerializersOrderStatusDetail)
 
@@ -81,8 +81,9 @@ class CartView(APIView):
         return Response(serializers_order.data)
     
     def delete(self, request):
+        customer = filter_user_by_customer(request.user)
 
-        Cart.clear()
+        Cart.clear(customer)
 
         return Response('Cart is empty')
     
@@ -95,9 +96,9 @@ class OrderDetailView(APIView):
         order_stat = get_object_or_404(OrderStatus, pk=pk)
 
         courier = filter_user_by_courier(request.user)
-
+        
         order_stat.courier = courier
-
+        
         updated_order_serializer = SerializersOrderStatusDetail(order_stat, data=request.data, partial=True)
         if updated_order_serializer.is_valid():
 
@@ -107,5 +108,18 @@ class OrderDetailView(APIView):
         return Response(
             updated_order_serializer.errors, status=status.HTTP_400_BAD_REQUEST
         )
+
+
+class DeleteSpecificOrder(APIView):
+
+    def post(self, request, pk):
+
+        customer = filter_user_by_customer(request.user)
+
+
+        Cart.remove(pk, customer)
+
+        return Response('Order is deleted')
+
 
         
