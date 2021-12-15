@@ -6,7 +6,5 @@ __pycache__
 
 # Javascript
 # libraries
-node_modules
-
 # Database
 db.sqlite3
