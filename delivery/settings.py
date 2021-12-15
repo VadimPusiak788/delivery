@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['*']
 STATIC_URL = True
 
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Application definition
 
