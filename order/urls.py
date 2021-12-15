@@ -4,6 +4,8 @@ from order.views import  (ListSupllierView, DetailProductView, DeleteSpecificOrd
                              DetailSupplierView, CartView, OrderDetailView)
 
 
+app_name='order'
+
 urlpatterns = [
     path('product/detail/<int:pk>/', DetailProductView.as_view(), name='detail_product'),
     path('supplier/detail/<int:pk>/', DetailSupplierView.as_view(), name='supplier-detail'),
