@@ -20,9 +20,6 @@ import ListOfDeals from "./components/ListOfDeals";
 const PerformerCabinet = ({ match }) => {
   const menuItems = (
     <>
-      <Menu.Item key="1" icon={<FileTextOutlined />}>
-        <Link to={`${match.url}/my-data`}>My data</Link>
-      </Menu.Item>
       <Menu.Item key="2" icon={<DollarCircleOutlined />}>
         <Link to={`${match.url}/history-orders`}>History orders</Link>
       </Menu.Item>
@@ -34,9 +31,7 @@ const PerformerCabinet = ({ match }) => {
 
   const switchRoutes = (
     <>
-      <Route path={`${match.url}/my-data`}>
-        <MyDataList />
-      </Route>
+
       <Route path={`${match.url}/history-orders`}>
         <MyOrdersList />
       </Route>

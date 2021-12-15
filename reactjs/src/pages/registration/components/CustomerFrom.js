@@ -14,7 +14,6 @@ const CustomerFrom = () => {
             password1: values.password,
             password2: values.password,
             city: values.city,
-            email: values.email,
             street: values.street,
         }).then(res => {
             message.success("User created, please login")
@@ -41,16 +40,14 @@ const CustomerFrom = () => {
             scrollToFirstError
         >
             <Form.Item
-                name="email"
-                label="E-mail"
+                name="username"
+                label="Username"
+                tooltip="What do you want others to call you?"
                 rules={[
                     {
-                        type: "email",
-                        message: "The input is not valid E-mail!",
-                    },
-                    {
                         required: true,
-                        message: "Please input your E-mail!",
+                        message: "Please input your nickname!",
+                        whitespace: true,
                     },
                 ]}
             >
@@ -100,21 +97,6 @@ const CustomerFrom = () => {
             </Form.Item>
 
             <Form.Item
-                name="username"
-                label="Username"
-                tooltip="What do you want others to call you?"
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input your nickname!",
-                        whitespace: true,
-                    },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
                 name="city"
                 label="City"
                 rules={[
@@ -139,23 +121,6 @@ const CustomerFrom = () => {
                 <Input />
             </Form.Item>
 
-            <Form.Item
-                name="agreement"
-                valuePropName="checked"
-                rules={[
-                    {
-                        validator: (_, value) =>
-                            value
-                                ? Promise.resolve()
-                                : Promise.reject(new Error("Should accept agreement")),
-                    },
-                ]}
-                {...tailFormItemLayout}
-            >
-                <Checkbox>
-                    I have read the <Link to="agreement" target="_blank" rel="noopener noreferrer">Agreement</Link>
-                </Checkbox>
-            </Form.Item>
             <Form.Item {...tailFormItemLayout}>
                 <Button type="primary" htmlType="submit">
                     Register

@@ -15,7 +15,7 @@ const Login = () => {
   const onFinish = (values) => {
     axios.post(`${url}/api/login/`, { //TODO: before prod change this link
       username: values.username,
-      email: values.email,
+      // email: values.email,
       password: values.password
     }).then(response => {
       axiosInstance.defaults.headers['Authorization'] = "Token " + response.data.key;
@@ -25,6 +25,7 @@ const Login = () => {
       history.push("/");
     }).catch(err => {
       message.error(err.response.data.detail)
+      console.log(err.response.data)
     });
 
 
@@ -53,7 +54,7 @@ const Login = () => {
                 placeholder="Username"
               />
             </Form.Item>
-
+{/* 
             <Form.Item
               name="email"
               rules={[
@@ -64,7 +65,7 @@ const Login = () => {
                 prefix={<MailOutlined className="site-form-item-icon" />}
                 placeholder="Email"
               />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item
               name="password"

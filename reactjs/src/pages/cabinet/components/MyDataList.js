@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { whichRole } from "../../../common/auth";
 
 
-const data_header = ["Username", "First name", "Last name", "Email", "Location"];
+const data_header = ["Username",  "Location"];
 
 const MyDataList = () => {
   const data = useSelector((state) => state.userReducer)
@@ -24,10 +24,7 @@ const MyDataList = () => {
       <Col col={12}>
         <List size="large">
           <List.Item>{data.user.username}</List.Item>
-          <List.Item>{data.user.first_name || <b>Empty</b>}</List.Item>
-          <List.Item>{data.user.last_name || <b>Empty</b>}</List.Item>
-          <List.Item>{data.user.email || <b>Empty</b>}</List.Item>
-          <List.Item>{data.location || <b>Empty</b>}</List.Item>
+          <List.Item>{data.street || <b>Empty</b>}</List.Item>
         </List>
       </Col>
     </Row>

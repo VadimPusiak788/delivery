@@ -16,22 +16,21 @@ const Suppliers = () => {
     console.log(suppliers)
     return <Switch>
         <Route exact path="/" ><List
-            grid={{ gutter: 16, column: 4 }}
-            footer={<div></div>}
+        grid={{ gutter: 10, column: 3 }}
+        footer={<div></div>}
             bordered
             dataSource={suppliers}
             renderItem={item => (
              <List.Item style={{marginTop: '5em' }}>
                 <Card title={<Link to={`/supplier/${item.id}`}><div style={{justifyContent: "center" }}>{item.name}</div></Link>}>
-                <p>City: {item.location.city}</p>
-                <p>Street: {item.location.street}</p>
                 <Image
       width={200}
       
       src="http://denrakaev.com/wp-content/uploads/2015/03/no-image-800x511.png"
       />
                  </Card>
-
+                 <p>City: {item.location.city}</p>
+                <p>Street: {item.location.street}</p>
             </List.Item>
             )}
             

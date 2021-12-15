@@ -15,15 +15,11 @@ import {
 import MyDataList from "./components/MyDataList";
 import MyOrdersList from "./components/MyOrdersList";
 import CustomerSettings from "./components/CustomerSettings";
-import ActiveDeal from "./components/ActiveDeal";
 import Cart from './components/Cart'
 
 const CustomerCabinet = ({ match }) => {
   const menuItems = (
     <>
-      <Menu.Item key="1" icon={<FileTextOutlined />}>
-        <Link to={`${match.url}/my-data`}>My data</Link>
-      </Menu.Item>
       <Menu.Item key="2" icon={<ShoppingCartOutlined />}>
         <Link to={`${match.url}/cart`}>Cart</Link>
       </Menu.Item>
@@ -38,13 +34,9 @@ const CustomerCabinet = ({ match }) => {
 
   const switchRoutes = (
     <>
-      <Route path={`${match.url}/my-data`}>
-        <MyDataList />
-      </Route>
       <Route path={`${match.url}/cart`}>
         <Cart />
       </Route>
- 
       <Route path={`${match.url}/history-orders`}>
         <MyOrdersList />
       </Route>

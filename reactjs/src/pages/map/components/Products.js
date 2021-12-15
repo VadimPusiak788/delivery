@@ -28,12 +28,11 @@ const Products = (params) => {
                 description={item.description}
 
             />
-            <p>{item.price} UAH</p>
-
             <Image
       width={200}
       src="http://denrakaev.com/wp-content/uploads/2015/03/no-image-800x511.png"
       />
+            <p>{item.price} UAH</p>
 
         </List.Item>}
     />
