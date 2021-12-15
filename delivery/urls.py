@@ -51,5 +51,8 @@ urlpatterns = [
     path('', include('frontend.urls')),
     path('api/order/', include('order.urls'))
     
-]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]  
+
+if not settings.DEBUG:
+    urlpatterns +=  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
