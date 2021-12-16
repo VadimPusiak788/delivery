@@ -1,8 +1,13 @@
 from django.urls import path
 from . import views
 
-app_name='frontend'
 
 urlpatterns = [
-    path('', views.index),
+    path("", views.index),
+    path("cabinet/cart", views.index),
+    path("cabinet/active-deal", views.index),
+    path("cabinet/history-orders", views.index),
+    path("login", views.index),
+    path("registration", views.index),
+    path('supplier/<int:pk>/', views.indexs)
 ]

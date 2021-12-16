@@ -5,12 +5,12 @@ from user.serializers import SerializersLocation, SerailizersCustomer, Serailize
 
 
 
-class SerializersListSupplier(serializers.HyperlinkedModelSerializer):
+class SerializersListSupplier(serializers.ModelSerializer):
     location = SerializersLocation(read_only=True)
 
     class Meta:
         model = Supplier
-        fields = ('id', 'url', 'name', 'location')
+        fields = ('id', 'name', 'location')
 
 
 class SerializersProduct(serializers.ModelSerializer):
