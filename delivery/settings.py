@@ -142,7 +142,10 @@ STATIC_URL = '/static/' # the path in url
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR,  'templates'),
+    # Add to this list all the locations containing your static files 
+)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # Default primary key field type
