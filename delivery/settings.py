@@ -140,10 +140,11 @@ AUTH_USER_MODEL = 'user.User'
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/' # the path in url
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+STATIC_ROOT= os.path.join(BASE_DIR,'staticfiles/')
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(PROJECT_ROOT,'static/'),
 )
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'root') 
 
 TEMPLATE_DIRS = (
