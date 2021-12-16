@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-jwi7dez0d)h@@4*)3@n4r#9r-e#bml*hjhlua0y@h1qu2b()z0
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-STATIC_URL = True
 
 
 
@@ -159,9 +158,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticated',
-    # )
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
 
 SITE_ID = 1
