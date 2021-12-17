@@ -25,9 +25,9 @@ SECRET_KEY = 'django-insecure-jwi7dez0d)h@@4*)3@n4r#9r-e#bml*hjhlua0y@h1qu2b()z0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-STATIC_URL = True
+ALLOWED_HOSTS = ['*']
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # Application definition
@@ -39,12 +39,28 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'frontend'
+    'corsheaders',
+    'drf_yasg',
+    'django.contrib.sites',
+
+    'rest_framework',
+    'rest_framework.authtoken',
+    'allauth', 
+    'allauth.account', 
+    'allauth.socialaccount', 
+    'rest_auth',
+    'rest_auth.registration',
+
+    'frontend',
+    'user',
+    'order',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -116,14 +132,23 @@ USE_L10N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = 'user.User'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/' # the path in url
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+STATIC_ROOT= os.path.join(BASE_DIR,'staticfiles/')
+STATICFILES_DIRS = ()
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'root') 
 
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR,  'templates'),
+    # Add to this list all the locations containing your static files 
+)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
@@ -131,3 +156,21 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
+SITE_ID = 1
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# CORS POLICY
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITELIST = ("http://127.0.0.1:3000", "http://127.0.0.1:8000", "http://localhost:3000", "http://localhost:8000")
