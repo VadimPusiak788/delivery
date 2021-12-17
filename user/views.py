@@ -7,7 +7,7 @@ from order.serializers import SerializersOrderStatus
 from user.serializers import (CourierCustomRegistrationSerializer,
                 CustomerCustomRegistrationSerializer,SerailizersCustomerMe,SerailizersCourierMe)
 
-from order.query import filter_user_by_courier
+from order.utils.query import filter_user_by_courier
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 

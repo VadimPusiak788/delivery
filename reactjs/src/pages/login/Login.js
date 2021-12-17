@@ -13,7 +13,7 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const onFinish = (values) => {
-    axios.post(`${url}/api/login/`, { //TODO: before prod change this link
+    axios.post(`${url}api/login/`, { //TODO: before prod change this link
       username: values.username,
       // email: values.email,
       password: values.password

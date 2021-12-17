@@ -138,17 +138,17 @@ AUTH_USER_MODEL = 'user.User'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-# STATIC_URL = '/static/' # the path in url
-# PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-# STATIC_ROOT= os.path.join(BASE_DIR,'staticfiles/')
-# STATICFILES_DIRS = ()
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'root') 
+STATIC_URL = '/static/' # the path in url
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+STATIC_ROOT= os.path.join(BASE_DIR,'staticfiles/')
+STATICFILES_DIRS = ()
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'root') 
 
-# TEMPLATE_DIRS = (
-#     os.path.join(BASE_DIR,  'templates'),
-#     # Add to this list all the locations containing your static files 
-# )
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR,  'templates'),
+    # Add to this list all the locations containing your static files 
+)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

@@ -30,7 +30,7 @@ const Products = (params) => {
             />
             <Image
       width={200}
-      src="http://denrakaev.com/wp-content/uploads/2015/03/no-image-800x511.png"
+      src="https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
       />
             <p>{item.price} UAH</p>
 

@@ -26,7 +26,7 @@ const Suppliers = () => {
                 <Image
       width={200}
       
-      src="http://denrakaev.com/wp-content/uploads/2015/03/no-image-800x511.png"
+      src="https://images.assetsdelivery.com/compings_v2/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016.jpg"
       />
                  </Card>
                  <p>City: {item.location.city}</p>

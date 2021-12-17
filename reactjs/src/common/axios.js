@@ -3,7 +3,7 @@ import store from './../store/store'
 import { url } from './url'
 
 const axiosInstance = axios.create({
-    baseURL: `${url}/api/`, 
+    baseURL: `${url}api/`, 
     headers: {
         'Authorization': "Token " + localStorage.getItem('key'),
         'Content-Type': 'application/json',
