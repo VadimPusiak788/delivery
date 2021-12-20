@@ -9,3 +9,6 @@ __pycache__
 # libraries
 # Database
 db.sqlite3
+
+#secrets
+dotenv
