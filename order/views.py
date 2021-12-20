@@ -10,8 +10,8 @@ from order.models import  Order, OrderStatus, Product, Supplier, OrderItem
 from order.serializers import (SerializersProduct, SerializersListSupplier, SerializersSupplier, SerializersOrderItem,
                                 SerializersOrder, SerializersOrderStatusDetail)
 
-from order.cart import Cart
-from order.query import filter_user_by_customer, filter_user_by_courier, create_order
+from order.utils.cart import Cart
+from order.utils.query import filter_user_by_customer, filter_user_by_courier, create_order
 
 
 class DetailSupplierView(generics.RetrieveAPIView):
