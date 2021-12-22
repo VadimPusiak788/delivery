@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from decimal import Decimal
 from django.conf import settings
 from order.models import OrderItem, Product
-from order.query import filter_order_item_user__ordered
+from order.utils.query import filter_order_item_user__ordered
 
 
 class Cart:

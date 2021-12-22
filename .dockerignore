@@ -1,14 +1,17 @@
+# Git
+.git
+
 # Python
 # virtual environment
 env
 venv
+
 # cache files
 __pycache__
 
 # Javascript
 # libraries
-# Database
-db.sqlite3
+node_modules
 
-#secrets
+# secrets
 .env

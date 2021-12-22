@@ -1,30 +1,11 @@
-1) Встановіть потрібні Python бібліотеки.
-Щоб не використовувати глобальні бібліотеки, використовуємо venv.
+1) Переконайтесь що у вас встановлений Docker та docker-compose
+https://docs.docker.com/engine/install/
 
-```bash
-$ python -m venv env
-$ source env/bin/activate # якщо у вас Linux і bash*
-$ pip install -r requirements.txt
-```
-* якщо у вас не Linux і bash, шукайте команду для активаціі venv тут
-https://docs.python.org/3/library/venv.html
+2) Створіть .env файл з потрібними змінними оточення
 
-2) Запустіть міграції Django
+3) Запустіть контейнер, використовуючи дану команду:
 ```bash
-$ python manage.py migrate
+$ docker-compose up
 ```
 
-3) Запустіть збірку js, встановивши потрібні бібліотеки
-```bash
-$ cd frontend
-$ npm ci
-$ npm run dev
-```
-
-4) Запустіть Django сервер
-```bash
-$ cd ..
-$ python manage.py runserver
-```
-
-5) Відкривайте http://localhost:8000/test у браузері
+4) Відкривайте http://localhost:8000/test у браузері

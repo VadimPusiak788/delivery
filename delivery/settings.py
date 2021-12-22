@@ -10,8 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from dotenv import load_dotenv
 from pathlib import Path
 import os
+
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -45,9 +48,9 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework.authtoken',
-    'allauth', 
-    'allauth.account', 
-    'allauth.socialaccount', 
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'rest_auth',
     'rest_auth.registration',
 
@@ -93,9 +96,13 @@ WSGI_APPLICATION = 'delivery.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.environ.get("DB_NAME"),
+        "USER": os.environ.get("DB_USER"),
+        "PASSWORD": os.environ.get("DB_PASSWORD"),
+        "HOST": os.environ.get("DB_HOST"),
+        "PORT": os.environ.get("DB_PORT"),
     }
 }
 
@@ -138,16 +145,16 @@ AUTH_USER_MODEL = 'user.User'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/' # the path in url
+STATIC_URL = '/static/'  # the path in url
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-STATIC_ROOT= os.path.join(BASE_DIR,'staticfiles/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATICFILES_DIRS = ()
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'root') 
+WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'root')
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
-    # Add to this list all the locations containing your static files 
+    # Add to this list all the locations containing your static files
 )
 
 MEDIA_URL = '/media/'
@@ -173,4 +180,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # CORS POLICY
 CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_WHITELIST = ("http://127.0.0.1:3000", "http://127.0.0.1:8000", "http://localhost:3000", "http://localhost:8000")
+CORS_ORIGIN_WHITELIST = ("http://127.0.0.1:3000", "http://127.0.0.1:8000",
+                         "http://localhost:3000", "http://localhost:8000")
